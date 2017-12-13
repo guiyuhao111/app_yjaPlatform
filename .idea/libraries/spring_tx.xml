@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="spring-tx">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.m2/repository/org/springframework/spring-tx" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

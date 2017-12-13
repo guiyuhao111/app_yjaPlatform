@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.net.gxht.app.yjdPlatform.common.dao.CommonDao">
+    <insert id="insertUser">
+        INSERT INTO appUser(name,password,phone) VALUES (#{name},#{password},#{phone})
+    </insert>
+
+    <select id="checkToken" resultType="map" parameterType="java.lang.String">
+      SELECT phone,tokenValue,userId FROM app_token where tokenValue=#{token}
+    </select>
+
+    <select id="findClientIdByCityCode" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT id FROM app_user WHERE citycode=#{citycode}
+    </select>
+
+    <select id="findClientPhoneById" parameterType="java.lang.Integer" resultType="java.lang.String">
+      SELECT phone FROM app_user WHERE id=#{id}
+    </select>
+
+    <select id="findCards" resultType="map" parameterType="java.lang.Integer">
+        SELECT id,title,content,url,img FROM app_applyCard <if test="id!=null"> WHERE id=#{id }</if>ORDER BY sort
+    </select>
+
+    <delete id="deleteCardById" parameterType="java.lang.Integer">
+        DELETE FROM app_applyCard WHERE id=#{id}
+    </delete>
+
+    <select id="findLoads" resultType="map" parameterType="java.lang.Integer">
+        SELECT id,title,content,url,img FROM app_applyLoans <if test="id!=null"> WHERE id=#{id }</if> ORDER BY sort
+    </select>
+
+    <delete id="deleteLoadsById" parameterType="java.lang.Integer">
+        DELETE FROM app_applyLoans WHERE id=#{id}
+    </delete>
+
+    <select id="findHotLoans" resultType="map" parameterType="java.lang.Integer">
+        SELECT id,title,content,url,img FROM app_hotLoans <if test="id!=null"> WHERE id=#{id }</if> ORDER BY sort
+    </select>
+
+    <delete id="deleteHotLoansById" parameterType="java.lang.Integer">
+        DELETE FROM app_hotLoans WHERE id=#{id}
+    </delete>
+
+    <select id="GetMessageData" resultType="map">
+        select picture.title,user.phone from app_picture picture,app_user user,app_application_info info where info.pictureId=picture.id and user.id=info.userId order by info.id desc limit 10
+    </select>
+
+    <select id="GetMessageDefault" resultType="java.lang.String">
+        SELECT * FROM app_message
+    </select>
+    
+    <update id="updateLoansById">
+        UPDATE app_applyLoans SET img=#{img},title=#{title},content=#{content},url=#{url} WHERE id=#{id}
+    </update>
+
+    <update id="updateCardsById">
+        UPDATE app_applyCard SET img=#{img},title=#{title},content=#{content},url=#{url} WHERE id=#{id}
+    </update>
+
+    <update id="updateHotLoansById">
+        UPDATE app_hotLoans SET img=#{img},title=#{title},content=#{content},url=#{url} where id=#{id}
+    </update>
+
+    <insert id="insertApplyCard">
+        INSERT app_applyCard (title,content,url,img,sort) VALUES (#{title},#{content},#{url},#{img},1)
+    </insert>
+
+    <insert id="insertApplyLoans">
+        INSERT app_applyLoans (title,content,url,img,sort) VALUES (#{title},#{content},#{url},#{img},1)
+    </insert>
+
+    <insert id="insertHotLoans">
+        INSERT app_hotLoans (title,content,url,img,sort) VALUES (#{title},#{content},#{url},#{img},1)
+    </insert>
+
+</mapper>

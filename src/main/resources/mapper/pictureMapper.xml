@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.net.gxht.app.yjdPlatform.pictures.dao.PicturesDao">
+    <!-- 首页图片之轮播竖排 -->
+    <select id="findPictures" resultType="map" parameterType="java.lang.Integer">
+        SELECT img,id,type,title,content,url from app_picture WHERE type="竖排" OR type ="横排"
+        <if test="id!=null">AND id=#{id}</if>
+    </select>
+    <select id="findLunboPictures" resultType="java.lang.String">
+        SELECT img from app_picture WHERE type="轮播"
+    </select>
+    <select id="findRegistPicture" resultType="map">
+        SELECT * from app_picture WHERE type="注册"
+    </select>
+    <select id="findPictureByBelongId" resultType="java.lang.String" parameterType="java.lang.Integer">
+        SELECT img FROM app_picture WHERE belongId=#{id }
+    </select>
+    <!-- 根据数据库id查找对应的title -->
+    <select id="findTileByPictureId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT title FROM app_picture WHERE id=#{pictureId }
+    </select>
+    <select id="findContactByPictureId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT contact FROM app_picture WHERE id=#{pictureId }
+    </select>
+    <select id="findPicture" parameterType="java.lang.Integer" resultType="map">
+        SELECT
+        picture.img,
+        picture.id,
+        picture.title,
+        picture.content,
+        picture.price,
+        applyinfo.companyName companyName,
+        applyinfo.typeId typeId
+        FROM app_picture picture LEFT JOIN app_merchantApplyInfo applyinfo
+        ON applyinfo.id=picture.applyInfoId
+        <if test="id!=null">
+            WHERE picture.id=#{id }
+        </if>
+        <if test="type!=null">
+            WHERE picture.type=#{type}
+        </if>
+    </select>
+    <select id="findPageTwoImg" resultType="map">
+        SELECT img,id,price,type,status from app_picture WHERE type="headImg" OR type="jiuData"
+    </select>
+
+    <!-- 模糊查询 存在bug 小程序需要将地址发送过来 app需要从session里面取出地址-->
+    <select id="fuzzyQuery" resultType="map">
+        select
+        ap.id,
+        ap.title,
+        ap.content,
+        ap.img
+        from app_hpandmer ah,
+        app_picture ap,
+        app_merchantApplyInfo applyInfo
+        where ah.merchantId=ap.id
+        and ah.belongId=#{belongId}
+        and applyInfo.id=ap.applyInfoId
+        and applyInfo.citycode=#{citycode}
+        AND applyInfo.status=2
+        AND ap.title LIKE CONCAT(CONCAT('%',#{title}), '%')
+    </select>
+
+
+    <!--<select id="findMerchantByIdAndCityCode" parameterType="java.lang.Integer" resultType="map">-->
+    <!--SELECT id,img,title,content FROM app_picture WHERE  citycode=#{citycode}-->
+    <!--</select>-->
+
+    <!-- 此处需要优化 -->
+    <select id="findClientByPhone" parameterType="java.lang.String" resultType="map">
+      SELECT * FROM app_merchantcontact WHERE phone=#{phone }
+    </select>
+
+    <select id="findClientQueryTimes" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT times FROM app_user WHERE id=#{userId}
+    </select>
+    <update id="updateClientQueryTimes">
+      UPDATE app_user SET times=#{times} WHERE id=#{userId}
+    </update>
+
+    <!--<select id="findClientIdByCityCode" parameterType="java.lang.Integer" resultType="java.lang.Integer">-->
+    <!--SELECT id FROM app_user WHERE citycode=#{citycode}-->
+    <!--</select>-->
+
+    <select id="findMerchantByClientId" parameterType="java.lang.Integer" resultType="map">
+        SELECT * FROM app_picture WHERE clientId=#{userId }
+    </select>
+
+    <select id="findClientIdByPictureId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT clientId FROM picture WHERE id=#{pictureId }
+    </select>
+
+    <!--
+      用户入驻:
+      1.插入一条application 插入一条merchant
+    -->
+    <insert id="insertMerchantPicture" useGeneratedKeys="true" keyProperty="merchantPictureId">
+      INSERT INTO app_picture (
+        type,
+        title,
+        content,
+        img,
+        applyInfoId
+      ) values(
+        #{type},
+        #{title},
+        #{content},
+        #{img},
+        #{applyInfoId}
+      )
+    </insert>
+    <select id="findSelectOption" resultType="map">
+        select  id selectId,title selectTitle from app_picture where type="横排" or type="竖排" order by orderBy
+    </select>
+
+    <update id="updatePictureById" parameterType="cn.net.gxht.app.yjdPlatform.pictures.entity.Picture">
+        UPDATE app_picture SET img=#{path},title=#{title},content=#{content} WHERE id=#{id}
+    </update>
+
+    <delete id="deletePictureById" parameterType="java.lang.Integer">
+        DELETE FROM app_picture WHERE id=#{id}
+    </delete>
+
+    <insert id="insertPicture">
+        INSERT INTO app_picture (
+        type,
+        title,
+        content,
+        img,
+        applyInfoId
+        ) values(
+        #{type},
+        #{title},
+        #{content},
+        #{img},
+        #{applyInfoId}
+        )
+    </insert>
+</mapper>

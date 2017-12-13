@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>无标题文档</title>
+    <!--<link href="css/style.css" rel="stylesheet" type="text/css"/>-->
+    <script language="JavaScript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/upload.js">
+    </script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
+    <script type="text/javascript" src="js/testUploadFile.js"></script>
+
+</head>
+
+<body>
+
+<!--<form enctype="multipart/form-data" method="post" id="uploadFormId">-->
+    <!--<div class="attachs fl">-->
+        <!--<div class="t_fjfont">附件:</div>-->
+        <!--<div class="upload_btns"><input type="file" name="topPicture" id="file1" onchange="filefujianChange(this);"/></div>-->
+    <!--</div>-->
+    <!--<div class="attachs fl">-->
+        <!--<div class="t_fjfont">附件:</div>-->
+        <!--<div class="upload_btns"><input type="file" name="backPicture" id="file2" onchange="filefujianChange(this);"/></div>-->
+    <!--</div>-->
+    <!--<div class="attachs fl">-->
+        <!--<div class="t_fjfont">附件:</div>-->
+        <!--<div class="upload_btns"><input type="file" name="holdPicture" id="file3" onchange="filefujianChange(this);"/></div>-->
+    <!--</div>-->
+    <!--<input type="button" id="uploadFile" value="上传"/>-->
+<!--</form>-->
+<form enctype="multipart/form-data" method="post" id="apply">
+    <div class="attachs fl">
+        <div class="t_fjfont">附件:</div>
+        <div class="upload_btns"><input type="file" name="multipartFile"  onchange="filefujianChange(this);"/></div>
+    </div>
+    <input type="button" id="applyFile" value="上传"/>
+</form>
+</body>
+</html>

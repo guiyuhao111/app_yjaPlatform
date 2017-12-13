@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>无标题文档</title>
+</head>
+<script src="js/jquery-3.2.1.min.js">
+
+</script>
+<script type="text/javascript" id="-moblink-js" src="//f.moblink.mob.com/moblink.js?appkey=21df97c376228"></script>
+
+<script type="text/javascript">
+        MobLink.init({
+            showDefaultUI: false,
+            initCallback: function(){
+                console.log(111);
+            }
+        });
+</script>
+
+<script type="text/javascript">
+    function updateData() {
+        console.log(222);
+        MobLink.updateScheme({
+            key1: "桂预豪",
+            key2: "桂预豪1",
+            key3: "桂预豪2"
+        });
+    }
+</script>
+<body>
+<div id="moblink-href">
+    <input id="openAppBtn" type="button" value="打开App" onclick="updateData()" style="width: 200px; height: 30px;" />
+</div>
+</body>
+</html>

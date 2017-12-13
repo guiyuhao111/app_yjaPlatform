@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.net.gxht.app.yjdPlatform.user.dao.UserDao">
+    <insert id="insertAppUser">
+        INSERT INTO app_user(name,password,phone,createTime) VALUES (#{name},#{password},#{phone},now())
+    </insert>
+    <!--
+     保持用户账号唯一的接口
+    -->
+    <select id="findHasSameName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(*) FROM app_user WHERE name=#{name}
+    </select>
+    <!--
+     根据用户姓名和用户手机查询用户的接口
+    -->
+    <select id="findUserByName" parameterType="java.lang.String" resultType="cn.net.gxht.app.yjdPlatform.user.entity.AppUser">
+        SELECT * from app_user WHERE name=#{name}
+    </select>
+
+    <select id="findUserByPhone" parameterType="java.lang.String" resultType="cn.net.gxht.app.yjdPlatform.user.entity.AppUser">
+        SELECT * from app_user WHERE phone=#{phone}
+    </select>
+    <!--
+     登陆时保存token的接口
+     -->
+    <insert id="insertToken">
+        INSERT INTO app_token(tokenValue,phone,createTime,userId) VALUES (#{tokenValue},#{phone},NOW(),#{userId})
+    </insert>
+    <select id="findUserById" parameterType="java.lang.Integer" resultType="cn.net.gxht.app.yjdPlatform.user.entity.AppUser">
+      SELECT * from app_user WHERE id=#{id } order by orderlist DESC
+    </select>
+    <!--
+    用户申请注册的接口
+     -->
+    <insert id="userApplication" parameterType="java.lang.Integer">
+          INSERT INTO app_application_info (userId,pictureId,createTime) VALUES (#{userId},#{pictureId},now())
+    </insert>
+    <!--
+    修改密码的接口
+     -->
+    <update id="updatePassword">
+       UPDATE app_user SET password=#{password } WHERE id=#{id}
+    </update>
+    
+    <select id="findPhoneWhetherRegister" parameterType="java.lang.String" resultType="cn.net.gxht.app.yjdPlatform.user.entity.AppUser">
+      SELECT * FROM app_user WHERE phone=#{phone}
+    </select>
+    <!--
+     用户实名认证(用户上传实名认证资料)
+     status使用户认证的状态
+     0:审核中
+     1:审核成功
+     2:审核失败
+     3:未认证
+     -->
+    <update id="updateUserAuthInfo">
+        UPDATE app_user SET authName=#{authName},authStatus=0,authTime=now(),authCardNo=#{authCardNo} WHERE id=#{userId}
+    </update>
+    <select id="findUserByUserId" resultType="cn.net.gxht.app.yjdPlatform.user.entity.AppUser">
+        SELECT
+        user.id id,
+        user.name AS name,
+        user.phone AS phone,
+        user.authName AS authName,
+        user.authTime AS authTime,
+        user.authCardNo AS authCardNo,
+        user.img AS img,
+        authStatus.name AS authStatus,
+        user.authStatus authState
+        FROM app_user user join authStatus on user.authStatus=authStatus.authStatusId where user.id=#{id}
+    </select>
+
+    <select id="findUserApplyMerchantPhoneAndTitle" resultType="map">
+        select picture.title,user.phone phone from app_picture picture,app_merchantApplyInfo applyInfo,app_user user where picture.applyInfoId=applyInfo.Id and user.id=applyInfo.userId and picture.id=#{id}
+    </select>
+    <update id="updateUserPhoto" >
+        UPDATE app_user set img=#{newUserImgPath} WHERE id=#{userId}
+    </update>
+    <select id="findUserAuthImgLastTime" parameterType="java.lang.Integer" resultType="map">
+      SELECT img.path,img.zipImgPath FROM app_user_authimg img WHERE userId=#{id}
+    </select>
+    <delete id="deleteAuthImgLastTime" parameterType="java.lang.Integer">
+        DELETE  FROM app_user_authimg WHERE userId=#{id}
+    </delete>
+
+
+    <select id="findUserAuthInfo" parameterType="java.lang.Integer" resultMap="userAuthInfoMap">
+        select user.authStatus authState,
+                img.zipImgPath imgPath,
+                user.authCardNo,
+                imgtype.name imgType,
+                user.authTime,
+                user.authName,
+                user.id userId,
+                img.id imgId,
+                user.authFailedResult authFailedResult
+        from app_user user
+        left join app_user_authimg img on user.id=img.userId
+        left join app_user_authimgtype imgtype on img.typeId=imgtype.id
+        where user.id=#{userId}
+    </select>
+    <resultMap id="userAuthInfoMap" type="cn.net.gxht.app.yjdPlatform.user.entity.AppUser">
+        <id property="id" column="userId"></id>
+        <result property="authState" column="authState"></result>
+        <result property="authName" column="authName"></result>
+        <result property="authTime" column="authTime"></result>
+        <result property="authCardNo" column="authCardNo"></result>
+        <result property="authFailedResult" column="authFailedResult"></result>
+        <collection property="authImgs" ofType="cn.net.gxht.app.yjdPlatform.user.entity.AuthImg" column="imgId">
+            <id property="imgId" column="imgId"></id>
+            <result property="imgPath" column="imgPath"></result>
+            <result property="imgType" column="imgType"></result>
+        </collection>
+    </resultMap>
+
+    <insert id="insertUserFeedBack" parameterType="cn.net.gxht.app.yjdPlatform.user.entity.FeedBack">
+      INSERT INTO app_user_feedBack (
+        userId,
+        content,
+        createTime
+      ) values(
+        #{userId},
+        #{content},
+        now()
+      )
+    </insert>
+
+    <select id="findUserApplicationInfo" parameterType="java.lang.Integer" resultType="map">
+        SELECT
+  applyInfo.userId,
+  user.name,
+  picture.title,
+  info.createTime,
+  user.phone
+FROM app_application_info info, app_picture picture, app_merchantApplyInfo applyInfo, app_user user
+WHERE info.pictureId = picture.id AND picture.applyInfoId = applyInfo.id AND info.userId = user.id and applyInfo.userId=#{userId}
+    </select>
+
+    <select id="findUserApplicationInfoByHiself" parameterType="java.lang.Integer" resultType="map">
+        SELECT
+        applyInfo.userId,
+        user.name,
+        picture.title,
+        info.createTime,
+        user.phone
+        FROM app_application_info info, app_picture picture, app_merchantApplyInfo applyInfo, app_user user
+        WHERE info.pictureId = picture.id AND picture.applyInfoId = applyInfo.id AND info.userId = user.id and user.id=#{userId}
+    </select>
+    <select id="findUserPhoneAndNameByToken" parameterType="java.lang.String" resultType="map">
+        SELECT user.phone,user.name FROM app_token token,app_user user WHERE token.userId=user.id AND token.tokenValue=#{token}
+    </select>
+</mapper>

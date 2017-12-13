@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="true"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans-4.3.xsd  
+       http://www.springframework.org/schema/mvc   
+       http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd   
+       http://www.springframework.org/schema/tx   
+       http://www.springframework.org/schema/tx/spring-tx-4.3.xsd   
+       http://www.springframework.org/schema/context  
+       http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+    <context:component-scan base-package="cn.net.gxht.app.yjdPlatform"/>
+    <!-- spring mvc 注解及类型转换 -->
+    <mvc:annotation-driven conversion-service="conversionService"/>
+    <bean id="conversionService"
+          class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+    </bean>
+    <!-- spring mvc 视图解析器 -->
+    <!-- 定义跳转的文件的前后缀 ，视图模式配置 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->
+        <property name="prefix" value="/WEB-INF"/>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--设置拦截的路径-->
+            <mvc:mapping path="/**"/>
+            <!-- 登录和注册不必走拦截器 -->
+            <mvc:exclude-mapping path="/insertUser.do"/>
+            <mvc:exclude-mapping path="/login.do"/>
+            <mvc:exclude-mapping path="/getLocation.do"/>
+            <!-- 静态资源不必拦截 -->
+            <mvc:exclude-mapping path="/lunbo/*"/>
+            <mvc:exclude-mapping path="/henpai/*"/>
+            <mvc:exclude-mapping path="/shupai/*"/>
+            <mvc:exclude-mapping path="/son/*"/>
+            <mvc:exclude-mapping path="/page2/*"/>
+            <mvc:exclude-mapping path="/merchant/*"/>
+            <bean class="cn.net.gxht.app.yjdPlatform.common.entity.commonInterceptor.CommonInterceptor">
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <!-- 文件上传需要配置此解析器 
+       找类的快捷键为:ctrl+shift+t
+       查看本类方法：ctrl+o,假如想继续看父类方法继续ctrl+o
+    -->
+    <bean id="multipartResolver"
+    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <!-- 默认编码 -->
+    <property name="defaultEncoding" value="utf-8" />
+    <!-- 文件大小最大值
+     文件上传总和不得大于2mb
+     -->
+    <property name="maxUploadSize" value="20971520" />
+    <!-- 内存中的最大值 -->
+    <property name="maxInMemorySize" value="40960" />
+    </bean>
+</beans>

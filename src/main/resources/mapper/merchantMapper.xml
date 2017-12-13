@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.net.gxht.app.yjdPlatform.merchant.dao.MerchantDao">
+
+    <select id="findByBelongIdAndMerchantId" resultType="map">
+      SELECT * FROM app_hpandmer where belongId=#{belongId} AND merchantId=#{merchantId } AND state=2
+    </select>
+
+    <select id="findMerchantBybelongIdAndCityCode" resultType="map">
+        select
+        ap.id,
+        ap.title,
+        ap.content,
+        ap.img,
+        applyInfo.companyName,
+        applyInfo.typeId,
+        url
+        from app_hpandmer ah,
+        app_picture ap,
+        app_merchantApplyInfo applyInfo
+        where ah.merchantId=ap.id
+        and ah.belongId=#{belongId}
+        and applyInfo.id=ap.applyInfoId
+        and applyInfo.citycode=#{citycode}
+        AND applyInfo.status=2
+    </select>
+
+    <!--
+        插入用户入驻申请信息
+        //status 1.代表审核中
+        //2.审核通过
+     -->
+    <insert id="insertIntoApplyInfo" parameterType="cn.net.gxht.app.yjdPlatform.merchant.entity.ApplyInfo"
+            keyProperty="applyId" useGeneratedKeys="true">
+      INSERT INTO app_merchantApplyInfo (
+        citycode,
+        userId,
+        creditCode,
+        businessLicense,
+        status,
+        typeId,
+        createDate,
+        qrPath,
+        zipBusinessLicense,
+        companyName
+      ) VALUES (
+        #{citycode},
+        #{userId},
+        #{creditCode},
+        #{businessLicense},
+        1,
+        #{typeId},
+        now(),
+        #{qrPath},
+        #{zipBusinessLicense},
+        #{companyName}
+      )
+    </insert>
+
+    <insert id="MerchantEnter" parameterType="cn.net.gxht.app.yjdPlatform.merchant.entity.MerchantBelong">
+      INSERT INTO app_hpandmer (
+        belongId,
+        merchantId
+      )VALUES (
+        #{belongId},
+        #{merchantId}
+      )
+    </insert>
+
+    <select id="testGetTime" parameterType="java.lang.Integer" resultType="java.util.Date">
+        select createDate FROM  app_merchantApplyInfo WHERE id=#{id}
+    </select>
+
+    <select id="findUserApplyInfo" resultType="map" parameterType="java.lang.Integer">
+        SELECT
+        t1.applyInfoId,
+        t1.creditCode,
+        t1.zipBusinessLicense,
+        t1.failedMessage,
+        t1.title,
+        t1.content,
+        t1.img,
+        t1.status,
+        t1.typeId,
+        t1.statuName,
+        t1.merchantType,
+        t1.cityName,
+        t1.createDate,
+  appPicture.title applyType
+FROM (SELECT
+        userId,
+        creditCode,
+        zipBusinessLicense,
+        failedMessage,
+        title,
+        content,
+        hp.belongId,
+        picture.img,
+        applyinfo.id applyInfoId,
+        applyinfo.status,
+        applyinfo.typeId,
+        applyInfoStatu.name statuName,
+        applyinfo.createDate,
+        merchantType.type merchantType,
+        city.cityName
+      FROM app_merchantApplyInfo applyinfo LEFT JOIN app_picture picture ON picture.applyInfoId = applyinfo.id
+        LEFT JOIN app_hpandmer hp ON picture.Id = hp.merchantId
+        JOIN app_merchantApplyInfoStatu applyInfoStatu ON applyInfoStatu.id = applyinfo.status
+        LEFT JOIN app_user_merType merchantType ON merchantType.id = typeId join city on applyinfo.citycode=city.adcode) t1, app_picture appPicture
+WHERE t1.belongId = appPicture.id AND t1.userId=#{userId}
+    </select>
+
+    <update id="updataQrPathByApplyId">
+        update app_merchantApplyInfo SET qrPath=#{qrPath} WHERE id=#{applyId}
+    </update>
+    
+    <select id="findApplyInfoByApplyInfoId" parameterType="java.lang.Integer" resultType="map">
+      SELECT
+        t1.applyInfoId,
+        t1.creditCode,
+        t1.zipBusinessLicense,
+        t1.failedMessage,
+        t1.title,
+        t1.content,
+        t1.img,
+        t1.status,
+        t1.typeId,
+        t1.statuName,
+        t1.merchantType,
+        t1.cityName,
+        t1.qrPath,
+        t1.createDate,
+        t1.companyName,
+  appPicture.title applyType
+FROM (SELECT
+        userId,
+        creditCode,
+        zipBusinessLicense,
+        failedMessage,
+        title,
+        content,
+        hp.belongId,
+        picture.img,
+        applyinfo.id applyInfoId,
+        applyinfo.status,
+        applyinfo.typeId,
+        applyInfoStatu.name statuName,
+        applyinfo.createDate,
+        applyinfo.qrPath qrPath,
+        applyinfo.companyName,
+        merchantType.type merchantType,
+        city.cityName
+      FROM app_merchantApplyInfo applyinfo LEFT JOIN app_picture picture ON picture.applyInfoId = applyinfo.id
+        LEFT JOIN app_hpandmer hp ON picture.Id = hp.merchantId
+        JOIN app_merchantApplyInfoStatu applyInfoStatu ON applyInfoStatu.id = applyinfo.status
+        LEFT JOIN app_user_merType merchantType ON merchantType.id = typeId join city on applyinfo.citycode=city.adcode) t1, app_picture appPicture
+WHERE t1.belongId = appPicture.id AND t1.applyInfoId=#{applyInfoId}
+    </select>
+</mapper>

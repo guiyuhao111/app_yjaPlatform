@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.net.gxht.app.yjdPlatform.file.dao.FileDao">
+    <!--
+        将用户上传的认证信息图片存入到数据库
+     -->
+    <insert id="insertUserAuthImgInfo">
+        INSERT INTO app_user_authimg (
+        userId,
+        path,
+        typeId,
+        zipImgPath
+        )VALUES (
+        #{userId},
+        #{path},
+        #{typeId},
+        #{zipImgPath}
+        )
+    </insert>
+</mapper>
