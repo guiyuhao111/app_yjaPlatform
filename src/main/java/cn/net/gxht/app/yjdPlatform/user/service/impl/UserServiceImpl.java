@@ -269,13 +269,13 @@ public class UserServiceImpl implements UserService {
         logger.debug(account + "登录成功,token" + token);
         return token;
     }
-
+    @Override
     public AppUser findAppUserInfo(String token){
         Integer userId = findUserIdBytoken(token);
         AppUser appUser=userDao.findUserByUserId(userId);
         return appUser;
     }
-
+    @Override
     public Map<String, Object> doFindQRcodeInfo(Integer id, String token) {
         Map<String,Object> pictureInfoMap= picturesDao.findPicture(id,null);
         Map<String,Object> userInfoMap=userDao.findUserPhoneAndNameByToken(token);
