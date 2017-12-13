@@ -64,6 +64,7 @@ class CommonController {
         session.setAttribute("adcode", ad_info.getString("city_code"));
         resultMap.put("location", location);
         resultMap.put("adcode", ad_info.getString("city_code"));
+        city = substringCity(city);
         resultMap.put("city", city);
         return new JsonResult(resultMap);
     }
@@ -100,7 +101,6 @@ class CommonController {
     /**
      * 寻找所有的贷款
      * 也可以根据id来寻找所用贷款,根据id寻找贷款即是数组的第一个元素
-     *
      * @param page 分页的对象
      *             *
      * @param id   *
@@ -115,12 +115,10 @@ class CommonController {
 
     /**
      * 取掉城市中的市,前端无理取闹的要求
-     *
      * @param cityName *
      * @return
      */
     public String substringCity(String cityName) {
-        cityName = cityName;
         Integer orgLength = cityName.length();
         if (cityName.endsWith("市")) {
             cityName = cityName.substring(0, orgLength - 1);
@@ -139,13 +137,11 @@ class CommonController {
      * @throws UnsupportedEncodingException
      */
     @RequestMapping("/returnSharePage")
-    fun reTurnSharePage(session:HttpSession, belongId:String, id:String, state:Int?):String
-
-    {
-        session.setAttribute("belongId", belongId)
-        session.setAttribute("id", id)
-        session.setAttribute("state", state)
-        return "/erweimaShare"
+    public String reTurnSharePage(HttpSession session, String belongId, String id, Integer state) {
+        session.setAttribute("belongId", belongId);
+        session.setAttribute("id", id);
+        session.setAttribute("state", state);
+        return "/erweimaShare";
     }
 
     /**
@@ -157,11 +153,9 @@ class CommonController {
      */
     @RequestMapping("/findHotLoans")
     @ResponseBody
-    fun findHotLoans(page:Page, id:Int?):JsonResult
-
-    {
-        val hotLoansMap = commonService !!.findHotLoans(page, id)
-        return JsonResult(hotLoansMap)
+    public JsonResult findHotLoans(Page page, Integer id) {
+        Map hotLoansMap = commonService.findHotLoans(page, id);
+        return new JsonResult(hotLoansMap);
     }
 
     /**
@@ -171,74 +165,55 @@ class CommonController {
      */
     @RequestMapping("/findMessageData")
     @ResponseBody
-    fun findMessageData():JsonResult
-
-    {
-        return JsonResult(commonService !!.GetMessageDefault())
+    public JsonResult findMessageData() {
+        return new JsonResult(commonService.GetMessageDefault());
     }
 
     /**
      * 更新app图片(页面)
      *
      * @param classType     图片的类型
-     *                      *
      * @param picture       图片对象封装了图片的基本信息
-     *                      *
      * @param multipartFile 图片的文件对象
-     *                      *
      * @param request       用于获取当前根目录
-     *                      *
      * @param url           图片的访问路径
-     *                      *
      * @return *
      * @throws UnsupportedEncodingException
      */
     @RequestMapping("/appUpdataPageInfo")
     @ResponseBody
-    fun updatePageInfo(classType:String, picture:Picture, multipartFile:MultipartFile, request:HttpServletRequest, url:String):JsonResult
-
-    {
-        commonService !!.updatePageInfo(classType, picture, multipartFile, request, url)
-        return JsonResult()
+    public JsonResult updatePageInfo(String classType, Picture picture, MultipartFile multipartFile, HttpServletRequest request, String url) throws UnsupportedEncodingException {
+        commonService.updatePageInfo(classType, picture, multipartFile, request, url);
+        return new JsonResult();
     }
 
     /**
      * @param classType 删除图片的类型
-     *                  *
      * @param id        *
      * @param request   *
      * @param path      要删除图片的路径
-     *                  *
      * @return
      */
     @RequestMapping("/deletePageInfo")
     @ResponseBody
-    fun deletePageInfo(classType:String, id:Int?, request:HttpServletRequest, path:String):JsonResult
-
-    {
-        commonService !!.deletePageInfoById(classType, id, path, request)
-        return JsonResult()
+    public JsonResult deletePageInfo(String classType, Integer id, HttpServletRequest request, String path) {
+        commonService.deletePageInfoById(classType, id, path, request);
+        return new JsonResult();
     }
 
     /**
      * @param multipartFile 添加页面(轮播图,九宫格,热门贷款，信用卡)
-     *                      *
      * @param picture       图片对象
-     *                      *
      * @param url           图片访问链接
-     *                      *
      * @param request       *
      * @param imgType       图片类型(轮播图,九宫格,热门贷款，信用卡)
-     *                      *
      * @return *
      * @throws UnsupportedEncodingException
      */
     @RequestMapping("/addPageListObject")
     @ResponseBody
-    fun addPageObjectListObject(multipartFile:MultipartFile, picture:Picture, url:String, request:HttpServletRequest, imgType:String):JsonResult
-
-    {
-        commonService !!.addPageObjectListObject(multipartFile, picture, url, request, imgType)
-        return JsonResult();
+    public JsonResult addPageObjectListObject(MultipartFile multipartFile, Picture picture, String url, HttpServletRequest request, String imgType) throws UnsupportedEncodingException {
+        commonService.addPageObjectListObject(multipartFile, picture, url, request, imgType);
+        return new JsonResult();
     }
 }
