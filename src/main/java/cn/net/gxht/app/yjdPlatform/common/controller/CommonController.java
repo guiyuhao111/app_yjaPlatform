@@ -180,7 +180,6 @@ class CommonController {
     /**
      * 以下三个接口是后台数据接口
      */
-
     /**
      * 更新app图片(页面)
      *
