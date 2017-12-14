@@ -7,11 +7,11 @@ public class Page {
     /**
      * 当前页默认为1
      */
-    private Integer currentPage=1;
+    private Integer currentPage = 1;
     /**
      * 每夜默认为10条
      */
-    private Integer pageSize=10;
+    private Integer pageSize = 10;
     /**
      * 总条目数
      */
@@ -19,6 +19,7 @@ public class Page {
 
     /**
      * 开始条目数
+     *
      * @return
      */
     private Integer startIndex;
@@ -29,6 +30,7 @@ public class Page {
 
     /**
      * 总页数
+     *
      * @return
      */
     private Integer allPage;
@@ -37,20 +39,13 @@ public class Page {
         this.allPage = allPage;
     }
 
-    public Integer getStartIndex(){
-        startIndex=(currentPage-1)*pageSize;
-    return startIndex;
+    public Integer getStartIndex() {
+        startIndex = (currentPage - 1) * pageSize;
+        return startIndex;
     }
 
-//    public Integer getStartIndex() {
-//        return startIndex;
-//    }
-
-//    public Integer getEndIndex() {
-//        return endIndex;
-//    }
-    public Integer getEndIndex(){
-        endIndex= currentPage*pageSize<amount?currentPage*pageSize-1:amount-1;
+    public Integer getEndIndex() {
+        endIndex = currentPage * pageSize < amount ? currentPage * pageSize - 1 : amount - 1;
         return endIndex;
     }
 
@@ -91,7 +86,7 @@ public class Page {
     }
 
     public void setAllPage() {
-        allPage=amount%pageSize>0?amount/pageSize+1:amount/pageSize;
+        allPage = amount % pageSize > 0 ? amount / pageSize + 1 : amount / pageSize;
     }
 
     @Override

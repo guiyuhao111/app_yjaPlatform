@@ -35,9 +35,11 @@ public class CommonServiceImpl implements CommonService{
     private CommonDao commonDao;
     @Resource
     private PicturesDao pictureDao;
+    @Override
     public String checkUserLogin(String token, HttpSession session){
         return null;
     };
+    @Override
     public Map<String, Object> findCity() {
         String [] fistChars=new String[]{"A","B","C","D","E","F","G","H","Y","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
         Map<String,Object> resultMap=new HashMap<String,Object>();
@@ -49,28 +51,28 @@ public class CommonServiceImpl implements CommonService{
         System.out.println(resultMap);
         return resultMap;
     }
-
+    @Override
     public Map<String,Object> findCards(Page page,Integer id) {
         List<Map<String,Object>> cardList=commonDao.findCards(id);
         page.setPageSize(20);
         Map<String,Object> cardInfoMap= PageUtil.byPage(cardList,page);
         return cardInfoMap;
     }
-
+    @Override
     public Map<String, Object> findLoads(Page page,Integer id) {
         List<Map<String,Object>> loadList=commonDao.findLoads(id);
         Map<String,Object> loadInfoMap= PageUtil.byPage(loadList,page);
         return loadInfoMap;
 
     }
-
+    @Override
     public Map<String, Object> findHotLoans(Page page,Integer id) {
         List<Map<String,Object>> hotLoansList=commonDao.findHotLoans(id);
         page.setPageSize(5);
         Map<String,Object> hotLoansMap= PageUtil.byPage(hotLoansList,page);
         return hotLoansMap;
     }
-
+    @Override
     public String [] GetMessageData() {
         List<Map<String,Object>> messageList = commonDao.GetMessageData();
         System.out.println(messageList);
@@ -86,11 +88,11 @@ public class CommonServiceImpl implements CommonService{
         System.out.println(ArrayUtils.toString(messageArray));
         return messageArray;
     }
-
+    @Override
     public String[] GetMessageDefault() {
        return commonDao.GetMessageDefault();
     }
-
+    @Override
     public void updatePageInfo(String classType, Picture picture, MultipartFile multipartFile, HttpServletRequest request, String url) throws UnsupportedEncodingException {
         System.out.println("classType = [" + classType + "], picture = [" + picture + "], multipartFile = [" + multipartFile + "], request = [" + request + "], url = [" + url + "]");
         String title=picture.getTitle();
@@ -136,7 +138,7 @@ public class CommonServiceImpl implements CommonService{
             pictureDao.updatePictureById(picture);
         }
     }
-
+    @Override
     public void deletePageInfoById(String classType, Integer id,String path,HttpServletRequest request) {
         //先根据url删除文
         //2.删除数据库记录
@@ -166,7 +168,7 @@ public class CommonServiceImpl implements CommonService{
             throw new RuntimeException("删除数据库记录失败");
         }
     }
-
+    @Override
     public void addPageObjectListObject(MultipartFile multipartFile, Picture picture, String url, HttpServletRequest request, String imgType) throws UnsupportedEncodingException {
         //取得realPath
         //先将数据保存至数据库
