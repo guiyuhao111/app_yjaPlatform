@@ -137,7 +137,7 @@ public class MerchantServiceImpl implements MerchantService {
         String contents = "https://www.gxht.net.cn/app_yjdPlatform/returnSharePage.do?" + "belongId=" + belongId + "&id=" + merchantId+"&state=1";
         QRcodeUtil.makeQRcode(contents, QRcodeUtil.QRCODE_SIZE, logoPath, QRcodeUtil.LOGO_SIZE, QRcodeUtil.QRCODE_IMG_FORMAT, QRpath);
     }
-
+    @Override
     public Map<String, Object> findApplyInfo(String token, Page page) {
         Integer userId = userService.findUserIdBytoken(token);
         List<Map<String, Object>> mapList = merchantDao.findUserApplyInfo(userId);

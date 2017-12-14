@@ -88,7 +88,8 @@ public class UserController {
 
     /**
      * 用户申请贷款
-     * @param id 申请贷款的id
+     *
+     * @param id    申请贷款的id
      * @param token 检查用户是否登录
      * @return
      * @throws UnsupportedEncodingException
@@ -102,6 +103,7 @@ public class UserController {
 
     /**
      * 检查验证码是否正确
+     *
      * @param code
      * @param session
      * @return
@@ -115,7 +117,8 @@ public class UserController {
 
     /**
      * 用户更新密码(被废弃的更新密码的方式,已经废弃了一种)
-     * @param phone 用户手机号
+     *
+     * @param phone    用户手机号
      * @param password 用户新密码
      * @param session
      * @param code
@@ -131,11 +134,10 @@ public class UserController {
     }
 
     /**
-     *
-     * @param authName 认证姓名
-     * @param token 检查用户登录
-     * @param authCardNo 用户身份证认证
-     * @param topPicture 身份证正面
+     * @param authName    认证姓名
+     * @param token       检查用户登录
+     * @param authCardNo  用户身份证认证
+     * @param topPicture  身份证正面
      * @param backPicture 身份证反面
      * @param holdPicture 手持身份证
      * @param request
@@ -152,9 +154,10 @@ public class UserController {
 
     /**
      * 更新用户图片
-     * @param token 检查用户登录
+     *
+     * @param token           检查用户登录
      * @param userPictureFile 用户图片
-     * @param request 获取当前跟目录
+     * @param request         获取当前跟目录
      * @return
      * @throws UnsupportedEncodingException
      */
@@ -167,6 +170,7 @@ public class UserController {
 
     /**
      * 根据用的token寻找用户的认证信息
+     *
      * @param token
      * @return
      */
@@ -179,8 +183,9 @@ public class UserController {
 
     /**
      * 用户反馈
+     *
      * @param feedBack 反馈内容
-     * @param token 用登录信息
+     * @param token    用登录信息
      * @return
      * @throws UnsupportedEncodingException
      */
@@ -195,6 +200,7 @@ public class UserController {
 
     /**
      * 更新用户密码(有两种更新密码的方式，已经废弃了一种)
+     *
      * @param oldPassword
      * @param token
      * @param newPassword
@@ -209,6 +215,8 @@ public class UserController {
 
     /**
      * 寻找用户申请的信息
+     * 查询的是用户申请贷款的信息
+     *
      * @param token
      * @param page
      * @return
@@ -222,6 +230,8 @@ public class UserController {
 
     /**
      * 寻找用户申请信息
+     * 查询的是他人申请我入驻的商家的信息
+     *
      * @param token
      * @param page
      * @return
@@ -234,7 +244,8 @@ public class UserController {
     }
 
     /**
-     * 寻找用户信息
+     * 寻找用户信息(前端无理取闹的要求，写了两个)
+     *
      * @param token
      * @return
      */
@@ -246,7 +257,6 @@ public class UserController {
     }
 
     /**
-     *
      * @param merchantId
      * @param token
      * @return

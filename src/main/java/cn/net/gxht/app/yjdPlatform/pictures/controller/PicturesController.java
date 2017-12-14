@@ -35,12 +35,12 @@ public class PicturesController {
      * @param id
      * @return
      */
-    @RequestMapping("/findSonPicture")
-    @ResponseBody
-    public JsonResult doFindSonPicture(int id) {
-        String path = picturesService.findPictureByBelongId(id);
-        return new JsonResult(path);
-    }
+//    @RequestMapping("/findSonPicture")
+//    @ResponseBody
+//    public JsonResult doFindSonPicture(int id) {
+//        String path = picturesService.findPictureByBelongId(id);
+//        return new JsonResult(path);
+//    }
 
     /**
      * 寻找轮播图图片url
@@ -72,35 +72,23 @@ public class PicturesController {
      *
      * @return
      */
-    @RequestMapping("/findShupai")
-    @ResponseBody
-    public JsonResult doFindShupaiPictures() {
-        Map<String, Object> map = picturesService.findShupaiPictures();
-        return new JsonResult(map);
-    }
+//    @RequestMapping("/findShupai")
+//    @ResponseBody
+//    public JsonResult doFindShupaiPictures() {
+//        Map<String, Object> map = picturesService.findShupaiPictures();
+//        return new JsonResult(map);
+//    }
 
-    /**
-     * 被废弃的接口不做解释
-     *
-     * @return
-     */
-    @RequestMapping("/findRegistPicture")
-    @ResponseBody
-    public JsonResult doFindRegistPicture() {
-        return new JsonResult(picturesService.findRegistPicture());
-    }
-
-    /**
-     * 被废弃的接口
-     *
-     * @return
-     */
-    @RequestMapping("/findPageTwoImg")
-    @ResponseBody
-    public JsonResult doFindPageTowImg() {
-        Map<String, Object> map = picturesService.findPageTwoImg();
-        return new JsonResult(map);
-    }
+//    /**
+//     * 被废弃的接口不做解释
+//     *
+//     * @return
+//     */
+//    @RequestMapping("/findRegistPicture")
+//    @ResponseBody
+//    public JsonResult doFindRegistPicture() {
+//        return new JsonResult(picturesService.findRegistPicture());
+//    }
 
     /**
      * 寻找所有商家
