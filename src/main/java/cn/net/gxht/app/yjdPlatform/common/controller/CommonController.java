@@ -101,6 +101,7 @@ class CommonController {
     /**
      * 寻找所有的贷款
      * 也可以根据id来寻找所用贷款,根据id寻找贷款即是数组的第一个元素
+     *
      * @param page 分页的对象
      *             *
      * @param id   *
@@ -114,7 +115,8 @@ class CommonController {
     }
 
     /**
-     * 取掉城市中的市,前端无理取闹的要求
+     * 去掉城市中的市,前端无理取闹的要求
+     *
      * @param cityName *
      * @return
      */
@@ -127,7 +129,11 @@ class CommonController {
     }
 
     /**
-     * 扫二维码返回分享页面
+     * 扫二维码返回分享页面,初学者可能不太了解二维码,二维码其实就是一端文本进行加密，
+     * 用户扫二维码后会获取这段文本,假如这段文本是一个连接，通过浏览器扫二维码时会跳
+     * 转到这个链接,相当于用户点击这个连接,我在创建二维码时这个链接会带有三个参数belongId id state
+     * 经过一些操作用户会在扫app进入app后这三个参数会被带到app前端去,app前
+     * 端会根据这三个参数进入对应的商家申请贷款页面(了解)
      *
      * @param session  *
      * @param belongId *
@@ -168,6 +174,14 @@ class CommonController {
     public JsonResult findMessageData() {
         return new JsonResult(commonService.GetMessageDefault());
     }
+
+
+    /**
+     * 下面三个接口更适合写在cms（后台管理系统）这个项目中
+     * 因为更新app页面信息均是由后台管理系统进行操作,但是
+     * 这样后台系统和app管理系统必须在同一套服务器才能删除
+     * app的文件
+     */
 
     /**
      * 更新app图片(页面)
