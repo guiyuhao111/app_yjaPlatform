@@ -94,7 +94,5 @@ public class MerchantController {
     @ResponseBody
     JsonResult findApplyInfoByApplyInfoId(Integer applyInfoId) {
         return new JsonResult(merchantService.findApplyInfoByApplyInfoId(applyInfoId));
-    }
-
-    ;
+    };
 }
